@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Kais Nichtraucher Tracker</title>
+
+<style>
+body{
+  font-family:-apple-system,system-ui;
+  background:#0f172a;
+  color:white;
+  text-align:center;
+  padding:28px;
+  margin:0;
+}
+
+h1{
+  font-size:34px;
+  margin-bottom:18px;
+}
+
+.timer{
+  font-size:42px;
+  font-weight:800;
+  margin:20px 0;
+  line-height:1.2;
+}
+
+.card{
+  background:#111827;
+  padding:20px;
+  border-radius:16px;
+  margin:14px auto;
+  max-width:560px;
+}
+
+.value{
+  font-size:28px;
+  font-weight:700;
+  margin-top:8px;
+}
+
+.health{
+  text-align:left;
+  max-width:500px;
+  margin:auto;
+  font-size:16px;
+  line-height:1.55;
+}
+
+.done{
+  color:#22c55e;
+  font-weight:700;
+  margin:8px 0;
+}
+
+button{
+  margin-top:20px;
+  padding:14px 18px;
+  font-size:18px;
+  border-radius:12px;
+  border:none;
+  background:#22c55e;
+  color:#052e16;
+  font-weight:700;
+}
+
+.small{
+  color:#94a3b8;
+  font-size:14px;
+  line-height:1.45;
+  margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚭 Kais Nichtraucher-Tracker</h1>
+
+<div class="timer" id="timer"></div>
+
+<div class="card">
+  💰 Geld gespart
+  <div class="value" id="money"></div>
+</div>
+
+<div class="card">
+  🚬 Nicht gerauchte Sticks
+  <div class="value" id="sticks"></div>
+</div>
+
+<div class="card">
+  🔥 Streak
+  <div class="value" id="streak"></div>
+  <div class="small">Jeder volle Tag ohne Rauchen zählt in deine Serie.</div>
+</div>
+
+<div class="card">
+  ⏳ Geschätzte Lebenszeit zurückgewonnen
+  <div class="value" id="lifeBack"></div>
+  <div class="small">Faustregel: ca. 11 Minuten pro nicht gerauchter Zigarette. Statistischer Richtwert, nicht individuell exakt.</div>
+</div>
+
+<div class="card">
+  🫀 Gesundheits-Regeneration
+  <div class="health" id="health"></div>
+</div>
+
+<button onclick="craving()">Craving Hilfe</button>
+
+<script>
+const start = new Date("2026-03-09T00:00:00");
+
+const price = 7;
+const sticksPack = 20;
+const minutesPerCigarette = 11;
+
+function update(){
+  const now = new Date();
+  const diff = now - start;
+
+  const sec = Math.floor(diff / 1000);
+  const days = Math.floor(sec / 86400);
+  const hours = Math.floor((sec % 86400) / 3600);
+  const min = Math.floor((sec % 3600) / 60);
+  const s = sec % 60;
+
+  document.getElementById("timer").innerText =
+    days + " Tage " + hours + "h " + min + "m " + s + "s";
+
+  const packs = diff / (1000 * 60 * 60 * 24);
+  const sticks = packs * sticksPack;
+  const money = packs * price;
+
+  document.getElementById("money").innerText =
+    money.toFixed(2) + " €";
+
+  document.getElementById("sticks").innerText =
+    Math.floor(sticks);
+
+  document.getElementById("streak").innerText =
+    days + " Tage in Folge";
+
+  updateLifeBack(sticks);
+  updateHealth(diff);
+}
+
+function updateLifeBack(sticks){
+  const totalMinutes = Math.floor(sticks * minutesPerCigarette);
+
+  const days = Math.floor(totalMinutes / 1440);
+  const hours = Math.floor((totalMinutes % 1440) / 60);
+  const minutes = totalMinutes % 60;
+
+  let text = "";
+  if(days > 0){
+    text = days + " Tage " + hours + " Std " + minutes + " Min";
+  } else if(hours > 0){
+    text = hours + " Std " + minutes + " Min";
+  } else {
+    text = minutes + " Min";
+  }
+
+  document.getElementById("lifeBack").innerText = text;
+}
+
+function updateHealth(diff){
+  const hours = diff / 3600000;
+  const days = diff / 86400000;
+
+  let list = "";
+
+  if(hours >= 1)
+    list += "<div class='done'>✔ Puls und Blutdruck beginnen sich zu normalisieren</div>";
+
+  if(hours >= 8)
+    list += "<div class='done'>✔ Kohlenmonoxid im Blut sinkt, Sauerstofftransport verbessert sich</div>";
+
+  if(days >= 1)
+    list += "<div class='done'>✔ Herz-Kreislauf-Belastung beginnt zu sinken</div>";
+
+  if(days >= 2)
+    list += "<div class='done'>✔ Geruchs- und Geschmackssinn beginnen sich zu verbessern</div>";
+
+  if(days >= 3)
+    list += "<div class='done'>✔ Nikotin ist weitgehend aus dem Körper verschwunden</div>";
+
+  if(days >= 14)
+    list += "<div class='done'>✔ Kreislauf und Durchblutung verbessern sich deutlich</div>";
+
+  if(days >= 30)
+    list += "<div class='done'>✔ Lungenfunktion kann sich messbar verbessern</div>";
+
+  if(list === ""){
+    list = "<div>Noch am Anfang – dein Körper hat bereits mit der Regeneration begonnen.</div>";
+  }
+
+  document.getElementById("health").innerHTML = list;
+}
+
+function craving(){
+  alert(
+    "Der Impuls dauert meist nur wenige Minuten.\\n\\n" +
+    "1. Tief durchatmen\\n" +
+    "2. Wasser trinken\\n" +
+    "3. 3 Minuten warten\\n\\n" +
+    "Die Welle geht vorbei."
+  );
+}
+
+setInterval(update, 1000);
+update();
+</script>
+
+</body>
+</html>
+
