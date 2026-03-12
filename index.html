@@ -1,25 +1,103 @@
-Rauchfrei
-Seit dem 09.03.2026 rauchfrei. Jede Minute zählt.
-Heute rauchfrei
-0
-Tage
-0
-Stunden
-0
-Minuten
-0
-Sekunden
-Gespartes Geld
-0,00 €
-Berechnet mit 1 Packung pro Tag à 7,00 €.
-Nicht gerauchte Zigaretten
-0
-Basis: 20 Zigaretten pro Tag.
-Rauchfreie Wochen
-0
-Konstanz schlägt Motivation. Woche für Woche.
-Rauchfreie Monate
-0
-Monate sind hier als Durchschnittswert auf Basis von 30,44 Tagen berechnet.
-Gesundheitliche Regeneration
-Die Meilensteine unten sind typische medizinische Richtwerte und keine Garantie für den individuellen Verlauf. Alter, Vorerkrankungen, frühere Rauchmenge und Fitness spielen mit rein.
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rauchfrei</title>
+
+<style>
+body{
+font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+background:#0f172a;
+color:white;
+text-align:center;
+padding:30px;
+}
+
+h1{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:15px;
+margin:15px auto;
+max-width:400px;
+}
+
+.big{
+font-size:32px;
+font-weight:bold;
+}
+
+.small{
+opacity:0.7;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🚭 Rauchfrei</h1>
+
+<div class="card">
+<div class="small">Seit dem</div>
+<div class="big">09.03.2026</div>
+</div>
+
+<div class="card">
+<div class="small">Rauchfrei seit</div>
+<div class="big" id="time"></div>
+</div>
+
+<div class="card">
+<div class="small">Gespartes Geld</div>
+<div class="big" id="money"></div>
+</div>
+
+<div class="card">
+<div class="small">Nicht gerauchte Zigaretten</div>
+<div class="big" id="cigs"></div>
+</div>
+
+<script>
+
+const startDate = new Date("2026-03-09T00:00:00")
+
+const pricePerDay = 7
+const cigsPerDay = 20
+
+function update(){
+
+const now = new Date()
+
+const diff = now - startDate
+
+const seconds = Math.floor(diff/1000)
+const minutes = Math.floor(seconds/60)
+const hours = Math.floor(minutes/60)
+const days = Math.floor(hours/24)
+
+document.getElementById("time").innerText =
+days+" Tage "+(hours%24)+" Std "+(minutes%60)+" Min"
+
+const savedMoney = (diff/86400000)*pricePerDay
+document.getElementById("money").innerText =
+savedMoney.toFixed(2)+" €"
+
+const savedCigs = (diff/86400000)*cigsPerDay
+document.getElementById("cigs").innerText =
+Math.floor(savedCigs)
+
+}
+
+setInterval(update,1000)
+update()
+
+</script>
+
+</body>
+</html>
