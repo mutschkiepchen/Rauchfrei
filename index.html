@@ -1,103 +1,550 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rauchfrei</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Rauchfrei">
+  <title>Rauchfrei</title>
+  <style>
+    :root{
+      --bg:#020617;
+      --bg2:#0f172a;
+      --text:#e5eefc;
+      --muted:#94a3b8;
+      --green:#22c55e;
+      --blue:#38bdf8;
+      --amber:#f59e0b;
+      --shadow:0 10px 30px rgba(0,0,0,.28);
+      --radius:22px;
+    }
 
-<style>
-body{
-font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-background:#0f172a;
-color:white;
-text-align:center;
-padding:30px;
-}
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(56,189,248,.16), transparent 28%),
+        radial-gradient(circle at top left, rgba(34,197,94,.14), transparent 26%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+      color:var(--text);
+      min-height:100vh;
+      padding:calc(20px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+    }
 
-h1{
-font-size:40px;
-margin-bottom:10px;
-}
+    .app{width:100%;max-width:760px;margin:0 auto}
+    .hero{padding:18px 18px 8px;margin-bottom:14px}
 
-.card{
-background:#1e293b;
-padding:20px;
-border-radius:15px;
-margin:15px auto;
-max-width:400px;
-}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(34,197,94,.13);
+      color:#d7ffe5;
+      border:1px solid rgba(34,197,94,.25);
+      border-radius:999px;
+      padding:8px 12px;
+      font-size:14px;
+      font-weight:700;
+      backdrop-filter: blur(10px);
+    }
 
-.big{
-font-size:32px;
-font-weight:bold;
-}
+    h1{
+      font-size:clamp(34px, 7vw, 52px);
+      margin:14px 0 8px;
+      line-height:1;
+      letter-spacing:-1px;
+    }
 
-.small{
-opacity:0.7;
-}
-</style>
+    .subtitle{
+      color:var(--muted);
+      font-size:16px;
+      line-height:1.45;
+      margin:0;
+      max-width:60ch;
+    }
 
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+      margin:12px 0;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(17,24,39,.9), rgba(15,23,42,.92));
+      border:1px solid rgba(148,163,184,.18);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2{
+      margin:0 0 8px;
+      font-size:15px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .metric{
+      font-size:clamp(27px, 7vw, 40px);
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-.8px;
+      margin:4px 0 6px;
+    }
+
+    .submetric{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .wide{grid-column:1/-1}
+
+    .ticker{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:8px;
+      margin-top:10px;
+    }
+
+    .tick{
+      background:rgba(148,163,184,.08);
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:18px;
+      padding:12px 8px;
+      text-align:center;
+    }
+
+    .tick .num{
+      display:block;
+      font-size:clamp(20px,5.8vw,30px);
+      font-weight:800;
+      letter-spacing:-.5px;
+    }
+
+    .tick .lab{
+      display:block;
+      margin-top:3px;
+      font-size:11px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.8px;
+    }
+
+    .section-title{
+      margin:18px 4px 10px;
+      font-size:18px;
+      font-weight:800;
+      letter-spacing:-.3px;
+    }
+
+    .timeline{
+      display:grid;
+      gap:10px;
+    }
+
+    .milestone{
+      background:linear-gradient(180deg, rgba(17,24,39,.85), rgba(15,23,42,.9));
+      border:1px solid rgba(148,163,184,.14);
+      border-radius:18px;
+      padding:14px 14px 12px;
+      box-shadow:var(--shadow);
+    }
+
+    .milestone-top{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    .milestone h3{
+      margin:0;
+      font-size:15px;
+    }
+
+    .milestone p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+
+    .state{
+      white-space:nowrap;
+      font-size:12px;
+      font-weight:800;
+      padding:7px 10px;
+      border-radius:999px;
+    }
+
+    .state.done{background:rgba(34,197,94,.14); color:#d9ffe7; border:1px solid rgba(34,197,94,.24)}
+    .state.running{background:rgba(245,158,11,.14); color:#ffe8bf; border:1px solid rgba(245,158,11,.24)}
+    .state.pending{background:rgba(148,163,184,.12); color:#dbe5f5; border:1px solid rgba(148,163,184,.18)}
+
+    .bar{
+      width:100%;
+      height:10px;
+      background:rgba(148,163,184,.12);
+      border-radius:999px;
+      overflow:hidden;
+      margin:10px 0 6px;
+    }
+
+    .fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--green), var(--blue));
+      border-radius:999px;
+      transition:width .5s ease;
+    }
+
+    .bartext{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .motivation{
+      display:grid;
+      gap:12px;
+      grid-template-columns:1.2fr .8fr;
+    }
+
+    .quote{
+      font-size:18px;
+      line-height:1.45;
+      margin:0;
+      font-weight:700;
+    }
+
+    .tiny{
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+      margin-top:10px;
+    }
+
+    .cta{
+      display:inline-block;
+      margin-top:10px;
+      padding:10px 14px;
+      border-radius:14px;
+      background:rgba(56,189,248,.12);
+      border:1px solid rgba(56,189,248,.2);
+      color:#dff6ff;
+      font-size:13px;
+      font-weight:700;
+      text-decoration:none;
+    }
+
+    .shop-list{
+      display:grid;
+      gap:8px;
+      margin-top:8px;
+    }
+
+    .shop-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:10px 12px;
+      background:rgba(148,163,184,.07);
+      border:1px solid rgba(148,163,184,.12);
+      border-radius:14px;
+      font-size:14px;
+    }
+
+    .footer{
+      margin-top:16px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
+      text-align:left;
+      padding:0 4px;
+    }
+
+    .accent-green{color:#bbf7d0}
+    .accent-blue{color:#bae6fd}
+
+    @media (max-width:680px){
+      .grid,.motivation{grid-template-columns:1fr}
+      .ticker{grid-template-columns:repeat(2,1fr)}
+    }
+  </style>
 </head>
-
 <body>
+  <div class="app">
+    <section class="hero">
+      <div class="badge">🚭 Rauchfrei seit 09.03.2026</div>
+      <h1>Jede Minute zählt.</h1>
+      <p class="subtitle">
+        Kein Motivations-Geschwurbel, sondern sichtbarer Fortschritt:
+        Zeit, Geld, Gesundheit und eine ehrliche Übersicht, wie weit du schon bist.
+      </p>
+    </section>
 
-<h1>🚭 Rauchfrei</h1>
+    <section class="grid">
+      <article class="card wide">
+        <h2>Rauchfrei-Zähler</h2>
+        <div class="ticker">
+          <div class="tick"><span class="num" id="days">0</span><span class="lab">Tage</span></div>
+          <div class="tick"><span class="num" id="hours">0</span><span class="lab">Stunden</span></div>
+          <div class="tick"><span class="num" id="minutes">0</span><span class="lab">Minuten</span></div>
+          <div class="tick"><span class="num" id="seconds">0</span><span class="lab">Sekunden</span></div>
+        </div>
+      </article>
 
-<div class="card">
-<div class="small">Seit dem</div>
-<div class="big">09.03.2026</div>
-</div>
+      <article class="card">
+        <h2>Gespartes Geld</h2>
+        <div class="metric" id="money">0,00 €</div>
+        <div class="submetric">Bei 1 Packung pro Tag à 7,00 €</div>
+      </article>
 
-<div class="card">
-<div class="small">Rauchfrei seit</div>
-<div class="big" id="time"></div>
-</div>
+      <article class="card">
+        <h2>Nicht gerauchte Zigaretten</h2>
+        <div class="metric" id="cigs">0</div>
+        <div class="submetric">20 Zigaretten pro Packung</div>
+      </article>
 
-<div class="card">
-<div class="small">Gespartes Geld</div>
-<div class="big" id="money"></div>
-</div>
+      <article class="card">
+        <h2>Rauchfreie Wochen</h2>
+        <div class="metric" id="weeks">0,0</div>
+        <div class="submetric">Saubere Sache. Woche für Woche.</div>
+      </article>
 
-<div class="card">
-<div class="small">Nicht gerauchte Zigaretten</div>
-<div class="big" id="cigs"></div>
-</div>
+      <article class="card">
+        <h2>Rauchfreie Monate</h2>
+        <div class="metric" id="months">0,0</div>
+        <div class="submetric">Durchschnitt mit 30,44 Tagen pro Monat</div>
+      </article>
 
-<script>
+      <article class="card wide">
+        <h2>Hochrechnung</h2>
+        <div class="grid" style="margin:0">
+          <div class="card" style="margin:0;box-shadow:none;background:rgba(148,163,184,.05)">
+            <h2>Nach 1 Jahr</h2>
+            <div class="metric accent-green" id="yearMoney">2.555,00 €</div>
+            <div class="submetric">Wenn du dranbleibst</div>
+          </div>
+          <div class="card" style="margin:0;box-shadow:none;background:rgba(148,163,184,.05)">
+            <h2>Nach 5 Jahren</h2>
+            <div class="metric accent-blue" id="fiveYearMoney">12.775,00 €</div>
+            <div class="submetric">Ohne Zinseszins. Nur stumpf gespart.</div>
+          </div>
+        </div>
+      </article>
+    </section>
 
-const startDate = new Date("2026-03-09T00:00:00")
+    <h2 class="section-title">Gesundheitliche Regeneration</h2>
+    <section class="timeline" id="timeline"></section>
 
-const pricePerDay = 7
-const cigsPerDay = 20
+    <h2 class="section-title">Motivation ohne Kitsch</h2>
+    <section class="motivation">
+      <article class="card">
+        <p class="quote" id="quote">Du hast nicht aufgehört, um heute wieder von vorne anzufangen.</p>
+        <div class="tiny">
+          Rückfall-Gedanke? Denk nicht an die einzelne Zigarette. Denk an den Preis:
+          Nikotin zieht fast immer noch mehr Nikotin nach sich. Genau das ist der Trick der Sucht.
+        </div>
+        <div class="cta">Auf dem iPhone: Teilen → „Zum Home-Bildschirm“</div>
+      </article>
 
-function update(){
+      <article class="card">
+        <h2>Was du dir davon kaufen könntest</h2>
+        <div class="shop-list" id="shopList"></div>
+      </article>
+    </section>
 
-const now = new Date()
+    <div class="footer">
+      Die Gesundheits-Meilensteine sind typische medizinische Richtwerte, keine Garantie für deinen individuellen Verlauf.
+      Alter, Vorerkrankungen, frühere Rauchmenge, Schlaf, Training und allgemeine Fitness spielen mit rein.
+    </div>
+  </div>
 
-const diff = now - startDate
+  <script>
+    const startDate = new Date("2026-03-09T00:00:00");
+    const packPrice = 7;
+    const cigsPerPack = 20;
+    const packsPerDay = 1;
+    const cigsPerDay = cigsPerPack * packsPerDay;
 
-const seconds = Math.floor(diff/1000)
-const minutes = Math.floor(seconds/60)
-const hours = Math.floor(minutes/60)
-const days = Math.floor(hours/24)
+    const milestones = [
+      {
+        label: "20 Minuten",
+        ms: 20 * 60 * 1000,
+        title: "Puls und Blutdruck beginnen sich zu normalisieren",
+        desc: "Ein früher Effekt. Nicht magisch, aber ein realer erster körperlicher Schritt."
+      },
+      {
+        label: "12 Stunden",
+        ms: 12 * 60 * 60 * 1000,
+        title: "Kohlenmonoxid im Blut sinkt deutlich",
+        desc: "Der Sauerstofftransport verbessert sich. Das ist physiologisch relevanter als jede Motivations-App-Floskel."
+      },
+      {
+        label: "48 Stunden",
+        ms: 48 * 60 * 60 * 1000,
+        title: "Geruchs- und Geschmackssinn können sich bessern",
+        desc: "Nicht bei allen gleich stark, aber oft ziemlich spürbar."
+      },
+      {
+        label: "2 Wochen bis 3 Monate",
+        ms: 90 * 24 * 60 * 60 * 1000,
+        title: "Kreislauf und Lungenfunktion können sich verbessern",
+        desc: "Belastbarkeit und Atmung werden oft alltagstauglich besser."
+      },
+      {
+        label: "1 bis 9 Monate",
+        ms: 270 * 24 * 60 * 60 * 1000,
+        title: "Husten und Kurzatmigkeit können abnehmen",
+        desc: "Flimmerhärchen in den Atemwegen erholen sich teilweise. Das ist keine Kleinigkeit."
+      },
+      {
+        label: "1 Jahr",
+        ms: 365 * 24 * 60 * 60 * 1000,
+        title: "Risiko für koronare Herzkrankheit sinkt deutlich",
+        desc: "Deutlich besser als direkt nach dem Rauchstopp, aber noch nicht automatisch Nichtraucher-Niveau."
+      },
+      {
+        label: "5 Jahre",
+        ms: 5 * 365 * 24 * 60 * 60 * 1000,
+        title: "Schlaganfall-Risiko kann sich weiter normalisieren",
+        desc: "Je nach Person und Risikoprofil unterschiedlich. Langfristig aber stark relevant."
+      }
+    ];
 
-document.getElementById("time").innerText =
-days+" Tage "+(hours%24)+" Std "+(minutes%60)+" Min"
+    const quotes = [
+      "Du hast nicht aufgehört, um heute wieder von vorne anzufangen.",
+      "Eine Zigarette löst kein Problem. Sie verschiebt nur Entzug für ein paar Minuten.",
+      "Der schwere Teil ist nicht der Verzicht. Der schwere Teil ist, die Sucht nicht mehr anzulügen.",
+      "Was jetzt wie Disziplin aussieht, ist in ein paar Monaten einfach dein neuer Normalzustand.",
+      "Nikotin verkauft Erleichterung und liefert Abhängigkeit. Schlechter Deal.",
+      "Jeder rauchfreie Tag ist ein echter Datenpunkt, kein Gefühl."
+    ];
 
-const savedMoney = (diff/86400000)*pricePerDay
-document.getElementById("money").innerText =
-savedMoney.toFixed(2)+" €"
+    const shopIdeas = [
+      { name: "Kinobesuch mit Snacks", price: 25 },
+      { name: "Neues Switch-Spiel im Sale", price: 45 },
+      { name: "Familienausflug mit Essen", price: 80 },
+      { name: "Kurzhantel-Zubehör / Fitness-Gadget", price: 60 },
+      { name: "Bluetooth-Kopfhörer", price: 120 },
+      { name: "Wochenendtrip-Kasse", price: 250 }
+    ];
 
-const savedCigs = (diff/86400000)*cigsPerDay
-document.getElementById("cigs").innerText =
-Math.floor(savedCigs)
+    function euro(value){
+      return value.toLocaleString("de-DE", { style:"currency", currency:"EUR" });
+    }
 
-}
+    function number(value, digits = 0){
+      return value.toLocaleString("de-DE", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+      });
+    }
 
-setInterval(update,1000)
-update()
+    function buildTimeline(diffMs){
+      const host = document.getElementById("timeline");
+      host.innerHTML = "";
 
-</script>
+      milestones.forEach(item => {
+        const progress = Math.max(0, Math.min(100, (diffMs / item.ms) * 100));
+        const done = diffMs >= item.ms;
+        const near = !done && progress > 0;
+        const remainingMs = Math.max(0, item.ms - diffMs);
 
+        const d = Math.floor(remainingMs / 86400000);
+        const h = Math.floor((remainingMs % 86400000) / 3600000);
+
+        const stateText = done ? "Erreicht" : near ? "Läuft" : "Offen";
+        const stateClass = done ? "done" : near ? "running" : "pending";
+
+        const wrap = document.createElement("article");
+        wrap.className = "milestone";
+        wrap.innerHTML = `
+          <div class="milestone-top">
+            <div>
+              <h3>${item.label} · ${item.title}</h3>
+              <p>${item.desc}</p>
+            </div>
+            <div class="state ${stateClass}">${stateText}</div>
+          </div>
+          <div class="bar"><div class="fill" style="width:${progress}%"></div></div>
+          <div class="bartext">
+            <span>${number(progress, 0)} %</span>
+            <span>${done ? "Abgehakt." : d > 0 ? `noch ca. ${d} Tage ${h} Std` : `noch ca. ${h} Std`}</span>
+          </div>
+        `;
+        host.appendChild(wrap);
+      });
+    }
+
+    function updateShopList(savedMoney){
+      const host = document.getElementById("shopList");
+      host.innerHTML = "";
+
+      shopIdeas.forEach(item => {
+        const possible = Math.floor(savedMoney / item.price);
+        const row = document.createElement("div");
+        row.className = "shop-item";
+        row.innerHTML = `
+          <span>${item.name}</span>
+          <strong>${possible > 0 ? `${possible}×` : euro(item.price)}</strong>
+        `;
+        host.appendChild(row);
+      });
+    }
+
+    function updateQuote(days){
+      const idx = Math.floor(days) % quotes.length;
+      document.getElementById("quote").textContent = quotes[idx];
+    }
+
+    function update(){
+      const now = new Date();
+      const diffMs = Math.max(0, now - startDate);
+
+      const totalSeconds = Math.floor(diffMs / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      const totalDays = diffMs / 86400000;
+      const savedMoney = totalDays * packPrice * packsPerDay;
+      const savedCigs = totalDays * cigsPerDay;
+      const weeks = totalDays / 7;
+      const months = totalDays / 30.44;
+
+      document.getElementById("days").textContent = number(days);
+      document.getElementById("hours").textContent = number(hours);
+      document.getElementById("minutes").textContent = number(minutes);
+      document.getElementById("seconds").textContent = number(seconds);
+
+      document.getElementById("money").textContent = euro(savedMoney);
+      document.getElementById("cigs").textContent = number(Math.floor(savedCigs));
+      document.getElementById("weeks").textContent = number(weeks, 1);
+      document.getElementById("months").textContent = number(months, 1);
+
+      document.getElementById("yearMoney").textContent = euro(packPrice * 365 * packsPerDay);
+      document.getElementById("fiveYearMoney").textContent = euro(packPrice * 365 * 5 * packsPerDay);
+
+      buildTimeline(diffMs);
+      updateShopList(savedMoney);
+      updateQuote(days);
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
 </body>
 </html>
